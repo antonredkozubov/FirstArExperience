@@ -46,6 +46,31 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.session.pause()
     }
 
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first else { return }
+        let result = sceneView.hitTest(touch.location(in: sceneView), types: [.featurePoint])
+        
+        guard let hitResult = result.last else { return }
+        let hitMatrix = hitResult.worldTransform
+        
+        let matrix = SCNMatrix4(hitMatrix)
+        let hitVector = SCNVector3.init(matrix.m41, matrix.m42, matrix.m43)
+        
+        let testNode = SCNNode()
+        testNode.transform = matrix
+        
+        
+        
+        createBall(position: hitVector)
+    }
+    
+    func createBall(position: SCNVector3) {
+        let ballShape = SCNSphere.init(radius: 0.01)
+        let ballNode = SCNNode.init(geometry: ballShape)
+        ballNode.position = position
+        
+        sceneView.scene.rootNode.addChildNode(ballNode)
+    }
     // MARK: - ARSCNViewDelegate
     
 /*
