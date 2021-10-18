@@ -61,15 +61,18 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         
         
-        createBall(position: hitVector)
+        createEarth(position: hitVector)
     }
     
-    func createBall(position: SCNVector3) {
-        let ballShape = SCNSphere.init(radius: 0.01)
-        let ballNode = SCNNode.init(geometry: ballShape)
-        ballNode.position = position
-        
-        sceneView.scene.rootNode.addChildNode(ballNode)
+    func createEarth(position: SCNVector3) {
+        let earthShape = SCNSphere.init(radius: 0.1)
+        let earthNode = SCNNode.init(geometry: earthShape)
+        earthNode.position = position
+        earthNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "eartDaymap")
+        earthNode.geometry?.firstMaterial?.specular.contents = UIImage(named: "earthSpecularMap")
+        earthNode.geometry?.firstMaterial?.emission.contents = UIImage(named: "earthClouds")
+        earthNode.geometry?.firstMaterial?.normal.contents = UIImage(named: "earthNormalMap")
+        sceneView.scene.rootNode.addChildNode(earthNode)
     }
     // MARK: - ARSCNViewDelegate
     
